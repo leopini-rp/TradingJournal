@@ -122,10 +122,25 @@
              <property name="horizontalScrollBarPolicy">
               <enum>Qt::ScrollBarPolicy::ScrollBarAsNeeded</enum>
              </property>
+             <property name="editTriggers">
+              <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+             </property>
+             <property name="selectionMode">
+              <enum>QAbstractItemView::SelectionMode::SingleSelection</enum>
+             </property>
+             <property name="selectionBehavior">
+              <enum>QAbstractItemView::SelectionBehavior::SelectItems</enum>
+             </property>
+             <property name="gridStyle">
+              <enum>Qt::PenStyle::SolidLine</enum>
+             </property>
              <attribute name="horizontalHeaderVisible">
               <bool>true</bool>
              </attribute>
              <attribute name="horizontalHeaderStretchLastSection">
+              <bool>false</bool>
+             </attribute>
+             <attribute name="verticalHeaderVisible">
               <bool>false</bool>
              </attribute>
              <column>
@@ -195,6 +210,14 @@
              <column>
               <property name="text">
                <string>Swap</string>
+              </property>
+              <property name="textAlignment">
+               <set>AlignLeading|AlignVCenter</set>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Desc.</string>
               </property>
               <property name="textAlignment">
                <set>AlignLeading|AlignVCenter</set>
@@ -641,10 +664,10 @@
                 <bool>false</bool>
                </property>
                <property name="currentSection">
-                <enum>QDateTimeEdit::Section::MonthSection</enum>
+                <enum>QDateTimeEdit::Section::YearSection</enum>
                </property>
                <property name="displayFormat">
-                <string>MM/dd/yyyy</string>
+                <string>yyyy/MM/dd</string>
                </property>
                <property name="calendarPopup">
                 <bool>true</bool>

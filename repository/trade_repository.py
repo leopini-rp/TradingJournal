@@ -64,3 +64,7 @@ def model_to_trade(trades):
         trade_list.append(trade)
 
     return trade_list
+
+
+def edit_db_item(trade_id, field):
+    ...

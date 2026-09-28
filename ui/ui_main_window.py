@@ -15,12 +15,12 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QAbstractSpinBox, QApplication, QComboBox, QDateEdit,
-    QDateTimeEdit, QDoubleSpinBox, QFrame, QGridLayout,
-    QHBoxLayout, QHeaderView, QLabel, QLayout,
-    QMainWindow, QPushButton, QSizePolicy, QSpacerItem,
-    QStackedWidget, QTableWidget, QTableWidgetItem, QTextEdit,
-    QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QAbstractItemView, QAbstractSpinBox, QApplication, QComboBox,
+    QDateEdit, QDateTimeEdit, QDoubleSpinBox, QFrame,
+    QGridLayout, QHBoxLayout, QHeaderView, QLabel,
+    QLayout, QMainWindow, QPushButton, QSizePolicy,
+    QSpacerItem, QStackedWidget, QTableWidget, QTableWidgetItem,
+    QTextEdit, QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -99,8 +99,8 @@ class Ui_MainWindow(object):
         self.gridLayout = QGridLayout(self.tradesFrame)
         self.gridLayout.setObjectName(u"gridLayout")
         self.tableWidget = QTableWidget(self.tradesFrame)
-        if (self.tableWidget.columnCount() < 9):
-            self.tableWidget.setColumnCount(9)
+        if (self.tableWidget.columnCount() < 10):
+            self.tableWidget.setColumnCount(10)
         __qtablewidgetitem = QTableWidgetItem()
         __qtablewidgetitem.setTextAlignment(Qt.AlignLeading|Qt.AlignVCenter)
         self.tableWidget.setHorizontalHeaderItem(0, __qtablewidgetitem)
@@ -128,6 +128,8 @@ class Ui_MainWindow(object):
         __qtablewidgetitem8 = QTableWidgetItem()
         __qtablewidgetitem8.setTextAlignment(Qt.AlignLeading|Qt.AlignVCenter)
         self.tableWidget.setHorizontalHeaderItem(8, __qtablewidgetitem8)
+        __qtablewidgetitem9 = QTableWidgetItem()
+        self.tableWidget.setHorizontalHeaderItem(9, __qtablewidgetitem9)
         self.tableWidget.setObjectName(u"tableWidget")
         sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         sizePolicy2.setHorizontalStretch(0)
@@ -135,8 +137,13 @@ class Ui_MainWindow(object):
         sizePolicy2.setHeightForWidth(self.tableWidget.sizePolicy().hasHeightForWidth())
         self.tableWidget.setSizePolicy(sizePolicy2)
         self.tableWidget.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+        self.tableWidget.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+        self.tableWidget.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
+        self.tableWidget.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectItems)
+        self.tableWidget.setGridStyle(Qt.PenStyle.SolidLine)
         self.tableWidget.horizontalHeader().setVisible(True)
         self.tableWidget.horizontalHeader().setStretchLastSection(False)
+        self.tableWidget.verticalHeader().setVisible(False)
 
         self.gridLayout.addWidget(self.tableWidget, 2, 0, 1, 1)
 
@@ -321,7 +328,7 @@ class Ui_MainWindow(object):
         self.dateInput.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.dateInput.setButtonSymbols(QAbstractSpinBox.ButtonSymbols.NoButtons)
         self.dateInput.setProperty(u"showGroupSeparator", False)
-        self.dateInput.setCurrentSection(QDateTimeEdit.Section.MonthSection)
+        self.dateInput.setCurrentSection(QDateTimeEdit.Section.YearSection)
         self.dateInput.setCalendarPopup(True)
 
         self.gridLayout_3.addWidget(self.dateInput, 1, 0, 1, 1)
@@ -428,6 +435,8 @@ class Ui_MainWindow(object):
         ___qtablewidgetitem7.setText(QCoreApplication.translate("MainWindow", u"Fee", None))
         ___qtablewidgetitem8 = self.tableWidget.horizontalHeaderItem(8)
         ___qtablewidgetitem8.setText(QCoreApplication.translate("MainWindow", u"Swap", None))
+        ___qtablewidgetitem9 = self.tableWidget.horizontalHeaderItem(9)
+        ___qtablewidgetitem9.setText(QCoreApplication.translate("MainWindow", u"Desc.", None))
         self.sizeLabel.setText(QCoreApplication.translate("MainWindow", u"Size", None))
         self.tpPriceLabel.setText(QCoreApplication.translate("MainWindow", u"TP Price", None))
         self.slPriceLabel.setText(QCoreApplication.translate("MainWindow", u"SL Price", None))
@@ -441,7 +450,7 @@ class Ui_MainWindow(object):
         self.dateLabel.setText(QCoreApplication.translate("MainWindow", u"Date", None))
         self.entryPriceLabel.setText(QCoreApplication.translate("MainWindow", u"Entry Price", None))
         self.swapLabel.setText(QCoreApplication.translate("MainWindow", u"Swap", None))
-        self.dateInput.setDisplayFormat(QCoreApplication.translate("MainWindow", u"MM/dd/yyyy", None))
+        self.dateInput.setDisplayFormat(QCoreApplication.translate("MainWindow", u"yyyy/MM/dd", None))
         self.descriptionLabel.setText(QCoreApplication.translate("MainWindow", u"Description", None))
         self.sideLabel.setText(QCoreApplication.translate("MainWindow", u"Side", None))
         self.addTradeButton.setText(QCoreApplication.translate("MainWindow", u"Add Trade", None))
