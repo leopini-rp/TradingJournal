@@ -66,5 +66,13 @@ def model_to_trade(trades):
     return trade_list
 
 
-def edit_db_item(trade_id, field):
-    ...
+def get_db_item(trade_id, field):
+    session = SessionLocal()
+
+    trade = session.get(TradeModel, trade_id)
+
+    value = getattr(trade, field)
+
+    session.close()
+
+    return value

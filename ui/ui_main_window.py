@@ -129,6 +129,7 @@ class Ui_MainWindow(object):
         __qtablewidgetitem8.setTextAlignment(Qt.AlignLeading|Qt.AlignVCenter)
         self.tableWidget.setHorizontalHeaderItem(8, __qtablewidgetitem8)
         __qtablewidgetitem9 = QTableWidgetItem()
+        __qtablewidgetitem9.setTextAlignment(Qt.AlignLeading|Qt.AlignVCenter)
         self.tableWidget.setHorizontalHeaderItem(9, __qtablewidgetitem9)
         self.tableWidget.setObjectName(u"tableWidget")
         sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
@@ -362,6 +363,13 @@ class Ui_MainWindow(object):
 
         self.gridLayout_3.addWidget(self.addTradeButton, 6, 7, 1, 2)
 
+        self.label = QLabel(self.tradesFrame)
+        self.label.setObjectName(u"label")
+        self.label.setAlignment(Qt.AlignmentFlag.AlignLeading|Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignVCenter)
+        self.label.setMargin(6)
+
+        self.gridLayout_3.addWidget(self.label, 6, 0, 1, 1)
+
         self.gridLayout_3.setRowStretch(6, 1)
 
         self.gridLayout.addLayout(self.gridLayout_3, 1, 0, 1, 1)
@@ -454,6 +462,7 @@ class Ui_MainWindow(object):
         self.descriptionLabel.setText(QCoreApplication.translate("MainWindow", u"Description", None))
         self.sideLabel.setText(QCoreApplication.translate("MainWindow", u"Side", None))
         self.addTradeButton.setText(QCoreApplication.translate("MainWindow", u"Add Trade", None))
+        self.label.setText(QCoreApplication.translate("MainWindow", u"(0/500)", None))
         self.editbutton.setText(QCoreApplication.translate("MainWindow", u"Edit", None))
         self.removeButton.setText(QCoreApplication.translate("MainWindow", u"Remove", None))
     # retranslateUi

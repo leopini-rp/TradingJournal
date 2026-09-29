@@ -5,12 +5,58 @@ from domain.trade_format import Trade
 from PySide6.QtCore import QDate, Qt, QEvent, QObject
 
 from PySide6.QtWidgets import (
-    QTableWidgetItem, QApplication, QWidget, QStyledItemDelegate, QDateEdit
+    QTableWidgetItem, QApplication, QWidget, QStyledItemDelegate, QDateEdit,
+    QDialog, QVBoxLayout, QTextEdit, QPushButton, QHBoxLayout
 )
 
 from repository.trade_repository import (
-    save_trade_to_db, get_trades
+    save_trade_to_db, get_trades, get_db_item
 )
+
+
+TABLE_FIELDS = {
+    0: "trade_date",
+    1: "side",
+    2: "size",
+    3: "entry_price",
+    4: "sl_price",
+    5: "tp_price",
+    6: "exit_price",
+    7: "fee",
+    8: "swap",
+    9: "description"
+}
+
+
+class DescriptionDialog(QDialog):
+    def __init__(self):
+        super().__init__()
+
+        # Window settings
+        self.setWindowTitle("Description - Edit")
+        self.resize(600, 250)
+
+        # Main layout
+        self.MainLayout = QVBoxLayout(self)
+
+        # Text input
+        self.TextField = QTextEdit()
+
+        self.MainLayout.addWidget(self.TextField)
+
+        # Buttons layout
+        self.ButtonsLayout = QHBoxLayout()
+
+        self.SaveButton = QPushButton("Save")
+        self.CancelButton = QPushButton("Cancel")
+
+        self.ButtonsLayout.addWidget(self.SaveButton)
+        self.ButtonsLayout.addWidget(self.CancelButton)
+
+        self.MainLayout.addLayout(self.ButtonsLayout)
+
+        self.SaveButton.clicked.connect(self.accept)
+        self.CancelButton.clicked.connect(self.reject)
 
 
 class DateDelegate(QStyledItemDelegate):
@@ -214,13 +260,20 @@ class ManageTradesPage(QObject):
 
     def editItem(self):
         selectedItem = self.ui.tableWidget.currentItem()
-        self.editingItem = selectedItem
+        column = selectedItem.column()
+        field = TABLE_FIELDS[column]
 
         self.editingId = self.getSelectedItemId()
 
-        self.originalValue = selectedItem.text()
+        # Repository function
+        value = get_db_item(self.editingId, field)
 
-        self.ui.tableWidget.editItem(selectedItem)
+        if field == "description":
+            dialog = DescriptionDialog()
+
+            dialog.TextField.setPlainText(value)
+
+            result = dialog.exec()
 
     def getSelectedItemId(self):
         row = self.ui.tableWidget.currentRow()
