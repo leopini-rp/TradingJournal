@@ -197,9 +197,9 @@ class ManageTradesPage(QObject):
                 decimalDelegate
                 )
 
-            sideDelegate.closeEditor.connect(
-                self.finishEdit
-            )
+        decimalDelegate.closeEditor.connect(
+            self.finishEdit
+        )
 
     def connectButton(self, button, action):
         button.clicked.connect(action)
