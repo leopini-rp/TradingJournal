@@ -8,11 +8,11 @@ from PySide6.QtCore import QDate, Qt, QEvent, QObject
 
 from PySide6.QtWidgets import (
     QTableWidgetItem, QApplication, QWidget, QStyledItemDelegate, QDateEdit,
-    QDialog, QVBoxLayout, QTextEdit, QPushButton, QHBoxLayout
+    QDialog, QVBoxLayout, QTextEdit, QPushButton, QHBoxLayout, QMessageBox
 )
 
 from repository.trade_repository import (
-    save_trade_to_db, get_trades, get_db_item, update_db_item
+    save_trade_to_db, get_trades, get_db_item, update_db_item, delete_db_item
 )
 
 
@@ -110,6 +110,11 @@ class ManageTradesPage(QObject):
         self.connectButton(
             self.ui.editbutton,
             self.editItem
+        )
+
+        self.connectButton(
+            self.ui.removeButton,
+            self.removeItem
         )
 
         self.ui.editbutton.setEnabled(False)
@@ -330,6 +335,24 @@ class ManageTradesPage(QObject):
 
             update_db_item(self.editingId, self.field, newValue)
 
+    def removeItem(self):
+        selectedRow = self.ui.tableWidget.currentRow()
+
+        itemId = self.getSelectedItemId()
+
+        answer = QMessageBox.question(
+            self.ui.tableWidget,
+            "Remove item",
+            "Are you sure you want to delete this item?",
+            QMessageBox.Yes | QMessageBox.No
+        )
+
+        if answer == QMessageBox.Yes:
+            self.ui.tableWidget.removeRow(selectedRow)
+            delete_db_item(itemId)
+
+        else:
+            return
 
 # endregion
 

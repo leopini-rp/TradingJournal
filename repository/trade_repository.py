@@ -87,3 +87,14 @@ def update_db_item(trade_id, field, new_value):
 
     session.commit()
     session.close()
+
+
+def delete_db_item(trade_id):
+    session = SessionLocal()
+
+    trade = session.get(TradeModel, trade_id)
+
+    session.delete(trade)
+
+    session.commit()
+    session.close()
