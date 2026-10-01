@@ -6,13 +6,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1050</width>
+    <width>1100</width>
     <height>591</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>1050</width>
+    <width>1100</width>
     <height>0</height>
    </size>
   </property>
@@ -217,7 +217,7 @@
              </column>
              <column>
               <property name="text">
-               <string>Desc.</string>
+               <string>Description</string>
               </property>
               <property name="textAlignment">
                <set>AlignLeading|AlignVCenter</set>

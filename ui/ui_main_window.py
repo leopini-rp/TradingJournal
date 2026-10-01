@@ -26,8 +26,8 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1050, 591)
-        MainWindow.setMinimumSize(QSize(1050, 0))
+        MainWindow.resize(1100, 591)
+        MainWindow.setMinimumSize(QSize(1100, 0))
         MainWindow.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
@@ -444,7 +444,7 @@ class Ui_MainWindow(object):
         ___qtablewidgetitem8 = self.tableWidget.horizontalHeaderItem(8)
         ___qtablewidgetitem8.setText(QCoreApplication.translate("MainWindow", u"Swap", None))
         ___qtablewidgetitem9 = self.tableWidget.horizontalHeaderItem(9)
-        ___qtablewidgetitem9.setText(QCoreApplication.translate("MainWindow", u"Desc.", None))
+        ___qtablewidgetitem9.setText(QCoreApplication.translate("MainWindow", u"Description", None))
         self.sizeLabel.setText(QCoreApplication.translate("MainWindow", u"Size", None))
         self.tpPriceLabel.setText(QCoreApplication.translate("MainWindow", u"TP Price", None))
         self.slPriceLabel.setText(QCoreApplication.translate("MainWindow", u"SL Price", None))

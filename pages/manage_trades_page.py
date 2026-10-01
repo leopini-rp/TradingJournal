@@ -2,6 +2,8 @@ from ui.ui_main_window import Ui_MainWindow
 
 from domain.trade_format import Trade
 
+import datetime
+
 from PySide6.QtCore import QDate, Qt, QEvent, QObject
 
 from PySide6.QtWidgets import (
@@ -10,7 +12,7 @@ from PySide6.QtWidgets import (
 )
 
 from repository.trade_repository import (
-    save_trade_to_db, get_trades, get_db_item
+    save_trade_to_db, get_trades, get_db_item, update_db_item
 )
 
 
@@ -119,6 +121,13 @@ class ManageTradesPage(QObject):
 
         dateDelegate = DateDelegate(self.ui.tableWidget)
         self.ui.tableWidget.setItemDelegateForColumn(0, dateDelegate)
+        dateDelegate.closeEditor.connect(
+            self.finishEdit
+        )
+
+        self.ui.tableWidget.itemDelegate().closeEditor.connect(
+            self.finishEdit
+        )
 
     def connectButton(self, button, action):
         button.clicked.connect(action)
@@ -260,26 +269,67 @@ class ManageTradesPage(QObject):
 
     def editItem(self):
         selectedItem = self.ui.tableWidget.currentItem()
+        self.editingItem = selectedItem
         column = selectedItem.column()
-        field = TABLE_FIELDS[column]
+
+        self.field = TABLE_FIELDS[column]
 
         self.editingId = self.getSelectedItemId()
 
         # Repository function
-        value = get_db_item(self.editingId, field)
+        value = get_db_item(self.editingId, self.field)
 
-        if field == "description":
-            dialog = DescriptionDialog()
+        if self.field == "description":
+            self.descriptionEdit(value, self.editingId, self.field)
 
-            dialog.TextField.setPlainText(value)
-
-            result = dialog.exec()
+        else:
+            self.ui.tableWidget.editItem(selectedItem)
 
     def getSelectedItemId(self):
         row = self.ui.tableWidget.currentRow()
         item = self.ui.tableWidget.item(row, 0)
 
         return item.data(Qt.UserRole)
+
+    def descriptionEdit(self, value, editingId, field):
+        dialog = DescriptionDialog()
+
+        dialog.TextField.setPlainText(value)
+
+        result = dialog.exec()
+
+        newDescription = dialog.TextField.toPlainText()
+
+        if result == QDialog.Accepted:
+            update_db_item(
+                editingId,
+                field,
+                newDescription
+                )
+
+            self.setDescriptionColumn(newDescription)
+
+        else:
+            return
+
+    def setDescriptionColumn(self, newDescription):
+        self.editingItem.setText("✓" if newDescription.strip() else "-")
+
+    def finishEdit(self, _editor, _hint):
+        if self.field == "trade_date":
+            textValue = self.editingItem.text()
+            dateValue = datetime.datetime.strptime(
+                textValue,
+                "%Y-%m-%d"
+            ).date()
+
+            update_db_item(self.editingId, self.field, dateValue)
+
+        else:
+            newValue = self.editingItem.text()
+
+            update_db_item(self.editingId, self.field, newValue)
+
 
 # endregion
 
