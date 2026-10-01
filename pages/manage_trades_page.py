@@ -8,7 +8,8 @@ from PySide6.QtCore import QDate, Qt, QEvent, QObject
 
 from PySide6.QtWidgets import (
     QTableWidgetItem, QApplication, QWidget, QStyledItemDelegate, QDateEdit,
-    QDialog, QVBoxLayout, QTextEdit, QPushButton, QHBoxLayout, QMessageBox
+    QDialog, QVBoxLayout, QTextEdit, QPushButton, QHBoxLayout, QMessageBox,
+    QComboBox, QDoubleSpinBox, QAbstractSpinBox
 )
 
 from repository.trade_repository import (
@@ -67,6 +68,7 @@ class DateDelegate(QStyledItemDelegate):
 
         editor.setDisplayFormat("yyyy-MM-dd")
         editor.setCalendarPopup(True)
+        editor.setAutoFillBackground(True)
 
         return editor
 
@@ -83,6 +85,50 @@ class DateDelegate(QStyledItemDelegate):
         model.setData(
             index,
             date.toString("yyyy-MM-dd")
+        )
+
+
+class SideDelegate(QStyledItemDelegate):
+    def createEditor(self, parent, option, index):
+        editor = QComboBox(parent)
+        editor.addItems(["BUY", "SELL"])
+        editor.setAutoFillBackground(True)
+
+        return editor
+
+    def setEditorData(self, editor, index):
+        currentValue = index.data()
+
+        position = editor.findText(currentValue)
+        editor.setCurrentIndex(position)
+
+    def setModelData(self, editor, model, index):
+        newValue = editor.currentText()
+
+        model.setData(index, newValue)
+
+
+class DecimalDelegate(QStyledItemDelegate):
+    def createEditor(self, parent, option, index):
+        editor = QDoubleSpinBox(parent)
+        editor.setButtonSymbols(QAbstractSpinBox.NoButtons)
+
+        editor.setDecimals(2)
+        editor.setRange(-999999999.99, 999999999.99)
+        editor.setAutoFillBackground(True)
+
+        return editor
+
+    def setEditorData(self, editor, index):
+        value = float(index.data())
+        editor.setValue(value)
+
+    def setModelData(self, editor, model, index):
+        value = editor.value()
+
+        model.setData(
+            index,
+            f"{value:.2f}"
         )
 
 
@@ -129,10 +175,31 @@ class ManageTradesPage(QObject):
         dateDelegate.closeEditor.connect(
             self.finishEdit
         )
-
         self.ui.tableWidget.itemDelegate().closeEditor.connect(
             self.finishEdit
         )
+
+        sideDelegate = SideDelegate(self.ui.tableWidget)
+        self.ui.tableWidget.setItemDelegateForColumn(
+            1,
+            sideDelegate
+        )
+        sideDelegate.closeEditor.connect(
+            self.finishEdit
+        )
+
+        decimalDelegate = DecimalDelegate(self.ui.tableWidget)
+        decimalDelegateColumns = (2, 3, 4, 5, 6, 7, 8)
+
+        for column in decimalDelegateColumns:
+            self.ui.tableWidget.setItemDelegateForColumn(
+                column,
+                decimalDelegate
+                )
+
+            sideDelegate.closeEditor.connect(
+                self.finishEdit
+            )
 
     def connectButton(self, button, action):
         button.clicked.connect(action)
